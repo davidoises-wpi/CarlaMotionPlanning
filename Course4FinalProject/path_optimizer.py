@@ -72,9 +72,12 @@ class PathOptimizer:
         # As a result, their curvature needs to lie within [-0.5, 0.5].
         # The third variable is the arc length, it has no upper limit, and it
         # has a lower limit of the straight line arc length.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
         # ------------------------------------------------------------------
-        # bounds = ...
+        # 0.5 is the cruvature of a minimum turning radius of 2m
+        # First variable is curavture at 1/3rd of the way
+        # Second variable is curavture at 2/3rd of the way
+        # 
+        bounds = [[-0.5, 0.5], [-0.5, 0.5], [sf_0, float('Inf')]]
         # ------------------------------------------------------------------
 
         # Here we will call scipy.optimize.minimize to optimize our spiral.
@@ -82,9 +85,8 @@ class PathOptimizer:
         # self.objective_grad. The bounds are computed above, and the inital
         # variables for the optimizer are set by p0. You should use the L-BFGS-B
         # optimization methods.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
         # ------------------------------------------------------------------
-        # res = scipy.optimize.minimize(...)
+        res = scipy.optimize.minimize(self.objective, p0, method='L-BFGS-B', jac=self.objective_grad, constraints=bounds)
         # ------------------------------------------------------------------
 
         spiral = self.sample_spiral(res.x)
@@ -112,12 +114,15 @@ class PathOptimizer:
     def thetaf(self, a, b, c, d, s):
         pass
 
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
         # ------------------------------------------------------------------
         # # Remember that a, b, c, d and s are lists
-        # ...
-        # thetas = ...
-        # return thetas
+        av = np.array(a)
+        bv = np.array(b)
+        cv = np.array(c)
+        dv = np.array(d)
+        sv = np.array(s)
+        thetas = av*sv + bv/2*sv**2 + cv/3*sv**3 + dv/4*sv**4
+        return thetas
         # ------------------------------------------------------------------
 
     ######################################################
@@ -169,12 +174,11 @@ class PathOptimizer:
         # Try to vectorize the code using numpy functions for speed if you can.
 
         # Try to vectorize the code using numpy functions for speed if you can.
-        # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
         # ------------------------------------------------------------------
-        # t_points = ...
-        # x_points = ...
-        # y_points = ...
-        # return [x_points, y_points, t_points]
+        t_points = self.thetaf(a, b, c, d, s_points)
+        x_points = scipy.integrate.cumtrapz(np.cos(t_points), s_points)
+        y_points = scipy.integrate.cumtrapz(np.sin(t_points), s_points)
+        return [x_points, y_points, t_points]
         # ------------------------------------------------------------------
 
     ######################################################
