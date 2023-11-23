@@ -1,0 +1,12 @@
+# Ignore all
+/*
+
+# Include these few files:
+!/.gitignore
+!/module_7.py
+
+# Include project folder
+!/Course4FinalProject
+
+# exclude python cache
+__pycache__/
