@@ -495,10 +495,9 @@ def calc_distance(v_i, v_f, a):
     """
     pass
 
-    # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
     # ------------------------------------------------------------------
-    # d = ...
-    # return d
+    d = (v_f**2 - v_i**2)/(2*a)
+    return d
     # ------------------------------------------------------------------
 
 ######################################################
@@ -526,9 +525,12 @@ def calc_final_speed(v_i, a, d):
     """
     pass
 
-    # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
     # ------------------------------------------------------------------
-    # v_f = ...
-    # return v_f
+    discriminant = v_i**2 + 2*a*d
+    if discriminant < 0:
+        v_f = 0
+    else:
+        v_f = sqrt(discriminant)
+    return v_f
     # ------------------------------------------------------------------
 

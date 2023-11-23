@@ -180,7 +180,6 @@ class CollisionChecker:
                         continue
                     else:
                         if not collision_check_array[j]:
-                            # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
                             # --------------------------------------------------
                             collision_path = paths[j]
                             collision_path_last_x = collision_path[0][-1]
