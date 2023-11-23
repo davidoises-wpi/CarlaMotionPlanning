@@ -80,10 +80,9 @@ class CollisionChecker:
                 # path[1][j]. 
                 circle_locations = np.zeros((len(self._circle_offsets), 2))
 
-                # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
                 # --------------------------------------------------------------
-                # circle_locations[:, 0] = ... 
-                # circle_locations[:, 1] = ...
+                circle_locations[:, 0] = path[0][j] + np.array(self._circle_offsets)*cos(path[2][j])
+                circle_locations[:, 1] = path[1][j] + np.array(self._circle_offsets)*sin(path[2][j])
                 # --------------------------------------------------------------
 
                 # Assumes each obstacle is approximated by a collection of
@@ -162,9 +161,15 @@ class CollisionChecker:
                 # The centerline goal is given by goal_state.
                 # The exact choice of objective function is up to you.
                 # A lower score implies a more suitable path.
-                # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
                 # --------------------------------------------------------------
-                # score = ...
+                path = paths[i]
+                current_path_last_x = path[0][-1]
+                current_path_last_y = path[1][-1]
+
+                x_dist = goal_state[0] - current_path_last_x
+                y_dist = goal_state[1] - current_path_last_y
+                dist = np.linalg.norm(np.array([x_dist, y_dist]))
+                score = dist
                 # --------------------------------------------------------------
 
                 # Compute the "proximity to other colliding paths" score and
@@ -177,7 +182,14 @@ class CollisionChecker:
                         if not collision_check_array[j]:
                             # TODO: INSERT YOUR CODE BETWEEN THE DASHED LINES
                             # --------------------------------------------------
-                            # score += self._weight * ...
+                            collision_path = paths[j]
+                            collision_path_last_x = collision_path[0][-1]
+                            collision_path_last_y = collision_path[1][-1]
+                            x_dist = current_path_last_x - collision_path_last_x
+                            y_dist = current_path_last_y - collision_path_last_y
+                            dist = np.linalg.norm(np.array([x_dist, y_dist]))
+                            # Score considers 1/dist so that paths close to current path have a bigger penalization
+                            score += self._weight / dist
                             # --------------------------------------------------
 
                             pass
